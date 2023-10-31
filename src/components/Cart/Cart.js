@@ -6,14 +6,35 @@ import CartItem from "./CartItem";
 
 const Cart = (props) => {
   const cartCtx = useContext(CartContext);
- let totalAmount = 0;
-  cartCtx.items.forEach((item)=>{
-    totalAmount = totalAmount + Number(item.price * item.quantity);
-  });
+
+  //Lean approach
+
+  const totalAmount = `Rs ${cartCtx.totalAmount.toFixed(2)}`;
+  const hasItems = cartCtx.items.length > 0;
+  const cartItemRemoveHandler = (id) => {
+    cartCtx.removeItem(id);
+  };
+  const cartItemAddHandler = (item) => {
+    cartCtx.addItem(item);
+  };
+
+  //Not lean approach
+  //  let totalAmount = 0;
+  //   cartCtx.items.forEach((item)=>{
+  //     totalAmount = totalAmount + Number(item.price * item.quantity);
+  //   });
+
   const cartItems = (
     <ul className={styles["cart-items"]}>
       {cartCtx.items.map((item) => (
-        <CartItem key={item.id} name={item.name} price={item.price} quantity={item.quantity} />
+        <CartItem
+          key={item.id}
+          name={item.name}
+          price={item.price}
+          amount={item.amount}
+          onRemove={cartItemRemoveHandler.bind(null, item.id)}
+          onAdd={cartItemAddHandler.bind(null, item)}
+        />
         // <li>
         //   Name: {item.name} Price: {item.price} Quantity: {item.quantity}
         // </li>
@@ -25,13 +46,13 @@ const Cart = (props) => {
       {cartItems}
       <div className={styles.total}>
         <span>Total Amount</span>
-        <span>Rs {totalAmount}</span>
+        <span>{totalAmount}</span>
       </div>
       <div className={styles.actions}>
         <button className={styles["button--alt"]} onClick={props.onHideCart}>
           Close
         </button>
-        <button className={styles.button}>Order</button>
+        {hasItems && <button className={styles.button}>Order</button>}
       </div>
     </Modal>
   );

@@ -1,26 +1,19 @@
-import React, { useState, useContext } from 'react';
+import React from 'react';
 import styles from './CartItem.module.css';
-import CartContext from '../../store/cart-context';
 
 const CartItem = (props) => {
-//   const cartCtx = useContext(CartContext);
   const price = `Rs ${props.price.toFixed(2)}`;
-  const [amount, setAmount] = useState(props.quantity);
-  const onRemoveHandler = ()=>{
-    let amt = amount;
-    setAmount(--amt); 
-    // if(amt>0){
-    //     let totalAmt = cartCtx.totalAmount;
-    //     console.log(Number(totalAmt) - Number(price));
-    //     cartCtx.updateTotalAmount(totalAmt -= price);
-    // }
-  }
-  const onAddHandler = ()=>{
-    let amt = amount;
-    setAmount(++amt);
-    // let totalAmt = cartCtx.totalAmount;
-    // cartCtx.updateTotalAmount(totalAmt += price);
-  }
+
+  //Not lean approach
+  // const [amount, setAmount] = useState(props.quantity);
+  // const onRemoveHandler = ()=>{
+  //   let amt = amount;
+  //   setAmount(--amt); 
+  // }
+  // const onAddHandler = ()=>{
+  //   let amt = amount;
+  //   setAmount(++amt);
+  // }
 
 
   return (
@@ -29,12 +22,12 @@ const CartItem = (props) => {
         <h2>{props.name}</h2>
         <div className={styles.summary}>
           <span className={styles.price}>{price}</span>
-          <span className={styles.amount}>x {amount}</span>
+          <span className={styles.amount}>x {props.amount}</span>
         </div>
       </div>
       <div className={styles.actions}>
-        <button onClick={onRemoveHandler}>−</button>
-        <button onClick={onAddHandler}>+</button>
+        <button onClick={props.onRemove}>−</button>
+        <button onClick={props.onAdd}>+</button>
       </div>
     </li>
   );
